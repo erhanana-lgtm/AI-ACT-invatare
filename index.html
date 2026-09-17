@@ -1,0 +1,958 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Ghidul AI Act</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Public+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F7F2E7;
+    --paper-raised:#FFFDF8;
+    --ink:#211D1A;
+    --ink-soft:#5B554C;
+    --line:#DDD3BE;
+    --line-soft:#EAE2CE;
+    --navy:#243352;
+    --navy-ink:#1B2740;
+    --gold:#A97B2F;
+    --gold-soft:#EADFC2;
+    --gold-strong:#8A6323;
+    --risk-prohibited:#9A3B34;
+    --risk-prohibited-bg:#F5DCD8;
+    --risk-high:#B5642A;
+    --risk-high-bg:#F5E2CC;
+    --risk-limited:#93791E;
+    --risk-limited-bg:#F1EAC9;
+    --risk-minimal:#3F6B4A;
+    --risk-minimal-bg:#DCE9DD;
+    --risk-gpai:#39507E;
+    --risk-gpai-bg:#DEE3F0;
+    --focus:#8A6323;
+    --shadow: 0 1px 2px rgba(33,29,26,.06), 0 8px 24px -12px rgba(33,29,26,.18);
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --paper:#181511;
+      --paper-raised:#211C16;
+      --ink:#EFE7D8;
+      --ink-soft:#B9AE9A;
+      --line:#3B3428;
+      --line-soft:#2B2620;
+      --navy:#7C93C4;
+      --navy-ink:#AEBFE0;
+      --gold:#D9A94B;
+      --gold-soft:#3A2F1B;
+      --gold-strong:#E8BE6C;
+      --risk-prohibited:#E08579;
+      --risk-prohibited-bg:#3A211E;
+      --risk-high:#E0A25E;
+      --risk-high-bg:#3A2A19;
+      --risk-limited:#D8C868;
+      --risk-limited-bg:#332F18;
+      --risk-minimal:#8FC79E;
+      --risk-minimal-bg:#1E2E22;
+      --risk-gpai:#9AAEDD;
+      --risk-gpai-bg:#20263A;
+      --focus:#E8BE6C;
+      --shadow: 0 1px 2px rgba(0,0,0,.4), 0 8px 28px -12px rgba(0,0,0,.6);
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper:#181511;
+    --paper-raised:#211C16;
+    --ink:#EFE7D8;
+    --ink-soft:#B9AE9A;
+    --line:#3B3428;
+    --line-soft:#2B2620;
+    --navy:#7C93C4;
+    --navy-ink:#AEBFE0;
+    --gold:#D9A94B;
+    --gold-soft:#3A2F1B;
+    --gold-strong:#E8BE6C;
+    --risk-prohibited:#E08579;
+    --risk-prohibited-bg:#3A211E;
+    --risk-high:#E0A25E;
+    --risk-high-bg:#3A2A19;
+    --risk-limited:#D8C868;
+    --risk-limited-bg:#332F18;
+    --risk-minimal:#8FC79E;
+    --risk-minimal-bg:#1E2E22;
+    --risk-gpai:#9AAEDD;
+    --risk-gpai-bg:#20263A;
+    --focus:#E8BE6C;
+    --shadow: 0 1px 2px rgba(0,0,0,.4), 0 8px 28px -12px rgba(0,0,0,.6);
+  }
+
+  *{box-sizing:border-box;}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Public Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+    line-height:1.55;
+    padding-inline: max(16px, env(safe-area-inset-left,0px)) max(16px, env(safe-area-inset-right,0px));
+  }
+  h1,h2,h3,h4{
+    font-family:'Fraunces', Georgia, 'Times New Roman', serif;
+    font-weight:600;
+    text-wrap:balance;
+    color:var(--ink);
+    margin:0;
+  }
+  a{color:var(--gold-strong);text-decoration-color:var(--gold);}
+  a:hover{text-decoration-thickness:2px;}
+  .mono{font-family:'IBM Plex Mono', ui-monospace, monospace; font-variant-numeric:tabular-nums;}
+  button{font-family:inherit;}
+  :focus-visible{outline:2.5px solid var(--focus); outline-offset:2px; border-radius:4px;}
+
+  .art{
+    display:inline-flex;align-items:center;gap:.35em;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:.78rem;
+    font-weight:500;
+    padding:.18em .6em;
+    border:1px solid var(--line);
+    border-radius:100px;
+    background:var(--paper-raised);
+    color:var(--ink-soft);
+    white-space:nowrap;
+  }
+  .art b{color:var(--ink); font-weight:600;}
+
+  /* ---------- Shell layout ---------- */
+  .shell{max-width:1180px;margin:0 auto;}
+  header.top{
+    position:sticky; top:env(safe-area-inset-top,0px); z-index:40;
+    background:var(--paper); border-bottom:1px solid var(--line);
+    padding-block:12px;
+  }
+  .top-row{display:flex;align-items:center;gap:14px;max-width:1180px;margin:0 auto;}
+  .brand{display:flex;align-items:center;gap:10px;flex:1;min-width:0;}
+  .brand-mark{
+    width:38px;height:38px;border-radius:9px;flex:none;
+    background:linear-gradient(155deg, var(--navy), var(--navy-ink));
+    display:flex;align-items:center;justify-content:center;
+    color:var(--gold-soft); font-family:'Fraunces',serif; font-weight:700; font-size:1.15rem;
+    box-shadow:var(--shadow);
+  }
+  .brand-text{min-width:0;}
+  .brand-text .t1{font-family:'Fraunces',serif;font-weight:600;font-size:1.05rem;line-height:1.15;}
+  .brand-text .t2{font-size:.72rem;color:var(--ink-soft);}
+  .verify-badge{
+    display:flex; align-items:center; gap:8px;
+    font-size:.72rem; color:var(--ink-soft);
+    border:1px solid var(--line); border-radius:100px; padding:6px 12px;
+    background:var(--paper-raised); flex:none;
+  }
+  .verify-badge .dot{width:7px;height:7px;border-radius:50%;background:#3F6B4A;flex:none;}
+  .menu-btn{
+    display:none; flex:none; width:38px;height:38px;border-radius:9px;
+    border:1px solid var(--line); background:var(--paper-raised); color:var(--ink);
+    cursor:pointer; font-size:1.1rem;
+  }
+
+  .layout{display:grid; grid-template-columns:230px 1fr; gap:28px; padding-block:24px 64px; max-width:1180px;margin:0 auto;}
+  nav.side{align-self:start; position:sticky; top:calc(70px + env(safe-area-inset-top,0px)); display:flex; flex-direction:column; gap:2px;}
+  nav.side button{
+    text-align:left; background:transparent; border:none; border-radius:8px;
+    padding:9px 12px; font-size:.86rem; color:var(--ink-soft); cursor:pointer;
+    display:flex; align-items:center; gap:9px;
+  }
+  nav.side button .n{font-family:'IBM Plex Mono',monospace;font-size:.7rem;color:var(--ink-soft);opacity:.6;flex:none;width:1.4em;}
+  nav.side button:hover{background:var(--line-soft); color:var(--ink);}
+  nav.side button.active{background:var(--navy); color:#F7F2E7;}
+  nav.side button.active .n{color:var(--gold-soft); opacity:1;}
+  nav.side hr{border:none; border-top:1px solid var(--line); margin:10px 4px;}
+
+  .backdrop{position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:45;display:none;}
+  .backdrop.show{display:block;}
+
+  main{min-width:0;}
+  .panel{display:none; animation:fade .25s ease;}
+  .panel.active{display:block;}
+  @keyframes fade{from{opacity:0; transform:translateY(4px);} to{opacity:1; transform:translateY(0);}}
+
+  .eyebrow{font-family:'IBM Plex Mono',monospace; font-size:.72rem; letter-spacing:.09em; text-transform:uppercase; color:var(--gold-strong); margin-bottom:8px; display:block;}
+  .panel > h2{font-size:1.7rem; margin-bottom:6px;}
+  .lede{color:var(--ink-soft); font-size:1.02rem; max-width:640px; margin-top:8px;}
+
+  .card{
+    background:var(--paper-raised); border:1px solid var(--line); border-radius:14px;
+    padding:20px 22px; box-shadow:var(--shadow);
+  }
+  .grid{display:grid; gap:16px;}
+  .g2{grid-template-columns:repeat(2,1fr);}
+  .g3{grid-template-columns:repeat(3,1fr);}
+  @media (max-width:760px){ .g2,.g3{grid-template-columns:1fr;} }
+
+  .section-block{margin-top:34px;}
+  .section-block:first-of-type{margin-top:22px;}
+
+  /* accordion */
+  .acc{border:1px solid var(--line); border-radius:12px; overflow:hidden; background:var(--paper-raised);}
+  .acc + .acc{margin-top:10px;}
+  .acc-h{
+    width:100%; display:flex; align-items:center; justify-content:space-between; gap:12px;
+    padding:14px 16px; background:transparent; border:none; cursor:pointer; text-align:left;
+    font-family:'Public Sans',sans-serif; font-weight:600; color:var(--ink); font-size:.92rem;
+  }
+  .acc-h .tag{flex:none;}
+  .acc-h .chev{transition:transform .2s ease; flex:none; color:var(--ink-soft);}
+  .acc.open .chev{transform:rotate(180deg);}
+  .acc-body{display:none; padding:0 16px 16px; color:var(--ink-soft); font-size:.9rem;}
+  .acc.open .acc-body{display:block;}
+  .acc-body ul{margin:8px 0 0; padding-left:1.2em;}
+  .acc-body li{margin-bottom:6px;}
+
+  .tag{
+    display:inline-block; font-size:.68rem; font-weight:700; letter-spacing:.03em; text-transform:uppercase;
+    padding:3px 9px; border-radius:100px;
+  }
+  .tag.prohibited{color:var(--risk-prohibited); background:var(--risk-prohibited-bg);}
+  .tag.high{color:var(--risk-high); background:var(--risk-high-bg);}
+  .tag.limited{color:var(--risk-limited); background:var(--risk-limited-bg);}
+  .tag.minimal{color:var(--risk-minimal); background:var(--risk-minimal-bg);}
+  .tag.gpai{color:var(--risk-gpai); background:var(--risk-gpai-bg);}
+  .tag.neutral{color:var(--ink-soft); background:var(--line-soft);}
+
+  /* timeline */
+  .tl{position:relative; margin-top:20px; padding-left:26px; border-left:2px solid var(--line);}
+  .tl-item{position:relative; padding-bottom:22px; cursor:pointer;}
+  .tl-item:last-child{padding-bottom:2px;}
+  .tl-item::before{
+    content:''; position:absolute; left:-33px; top:2px; width:14px; height:14px; border-radius:50%;
+    background:var(--paper); border:3px solid var(--navy);
+  }
+  .tl-item.omnibus::before{border-color:var(--gold-strong);}
+  .tl-date{font-family:'IBM Plex Mono',monospace; font-weight:600; font-size:.88rem; color:var(--navy-ink); display:flex; align-items:center; gap:10px; flex-wrap:wrap;}
+  .tl-item.omnibus .tl-date{color:var(--gold-strong);}
+  .tl-title{font-weight:600; margin-top:3px;}
+  .tl-detail{display:none; color:var(--ink-soft); font-size:.88rem; margin-top:8px; max-width:600px;}
+  .tl-item.open .tl-detail{display:block;}
+  .tl-item .chev{float:right; color:var(--ink-soft); transition:transform .2s;}
+  .tl-item.open .chev{transform:rotate(180deg);}
+
+  /* pyramid */
+  .pyramid-wrap{display:grid; grid-template-columns:1.1fr 1fr; gap:26px; align-items:start; margin-top:18px;}
+  @media (max-width:820px){ .pyramid-wrap{grid-template-columns:1fr;} }
+  .pyr-tier{
+    display:block; width:100%; border:none; cursor:pointer; margin:0 auto 6px; padding:14px 10px;
+    font-family:'Public Sans',sans-serif; font-weight:700; font-size:.85rem; text-align:center;
+    color:#fff; border-radius:8px; transition:transform .15s ease, filter .15s ease;
+  }
+  .pyr-tier:hover{filter:brightness(1.06);}
+  .pyr-tier.selected{transform:scale(1.02); box-shadow:var(--shadow);}
+  .pyr-tier[data-tier="prohibited"]{width:52%; background:var(--risk-prohibited);}
+  .pyr-tier[data-tier="high"]{width:70%; background:var(--risk-high);}
+  .pyr-tier[data-tier="limited"]{width:86%; background:var(--risk-limited);}
+  .pyr-tier[data-tier="minimal"]{width:100%; background:var(--risk-minimal);}
+  .pyr-note{text-align:center; font-size:.72rem; color:var(--ink-soft); margin-top:4px;}
+  .pyr-detail h3{font-size:1.05rem; margin-bottom:8px;}
+  .pyr-detail{min-height:180px;}
+
+  /* glossary */
+  .search-row{display:flex; gap:10px; margin-top:16px; margin-bottom:4px;}
+  .search-row input{
+    flex:1; padding:10px 14px; border:1px solid var(--line); border-radius:10px;
+    background:var(--paper-raised); color:var(--ink); font-size:.9rem; font-family:inherit;
+  }
+  .flash-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:12px; margin-top:16px;}
+  @media (max-width:700px){ .flash-grid{grid-template-columns:1fr;} }
+  .flash{
+    border:1px solid var(--line); border-radius:12px; background:var(--paper-raised);
+    padding:16px 18px; cursor:pointer; min-height:92px; box-shadow:var(--shadow);
+  }
+  .flash .term{font-weight:700; font-family:'Fraunces',serif; font-size:1.02rem; display:flex; justify-content:space-between; gap:8px;}
+  .flash .def{display:none; margin-top:10px; font-size:.86rem; color:var(--ink-soft);}
+  .flash.open .def{display:block;}
+  .flash .hint{font-size:.68rem; color:var(--ink-soft); opacity:.7; margin-top:8px;}
+
+  /* quiz */
+  .q{border:1px solid var(--line); border-radius:12px; padding:16px 18px; margin-top:14px; background:var(--paper-raised);}
+  .q p.stem{font-weight:600; margin:0 0 10px;}
+  .q label{display:flex; gap:10px; align-items:flex-start; padding:7px 0; font-size:.9rem; cursor:pointer;}
+  .q label input{margin-top:3px;}
+  .q .fb{display:none; margin-top:8px; font-size:.85rem; padding:8px 12px; border-radius:8px;}
+  .q .fb.ok{background:var(--risk-minimal-bg); color:var(--risk-minimal);}
+  .q .fb.bad{background:var(--risk-prohibited-bg); color:var(--risk-prohibited);}
+  .quiz-actions{display:flex; align-items:center; gap:14px; margin-top:18px;}
+  .btn{
+    background:var(--navy); color:#F7F2E7; border:none; border-radius:10px; padding:11px 20px;
+    font-weight:600; font-size:.88rem; cursor:pointer;
+  }
+  .btn:hover{filter:brightness(1.1);}
+  #quizScore{font-size:.88rem; color:var(--ink-soft);}
+
+  table.pen{width:100%; border-collapse:collapse; margin-top:14px; font-size:.86rem;}
+  table.pen th{text-align:left; font-size:.72rem; text-transform:uppercase; letter-spacing:.04em; color:var(--ink-soft); border-bottom:1px solid var(--line); padding:8px 10px;}
+  table.pen td{padding:11px 10px; border-bottom:1px solid var(--line-soft); vertical-align:top;}
+  table.pen tr:last-child td{border-bottom:none;}
+
+  .callout{
+    border-left:3px solid var(--gold-strong); background:var(--gold-soft); border-radius:0 10px 10px 0;
+    padding:14px 18px; font-size:.88rem; color:var(--ink);
+  }
+  .callout.warn{border-left-color:var(--risk-prohibited); background:var(--risk-prohibited-bg);}
+  .callout strong{display:block; margin-bottom:4px; font-family:'Fraunces',serif; font-size:.95rem;}
+
+  .src-list{list-style:none; padding:0; margin:14px 0 0; display:flex; flex-direction:column; gap:10px;}
+  .src-list li{border:1px solid var(--line); border-radius:10px; padding:10px 14px; font-size:.85rem; background:var(--paper-raised);}
+  .src-list .k{color:var(--ink-soft); font-size:.74rem; display:block; margin-bottom:2px;}
+
+  .authority-card{border:1px solid var(--line); border-radius:12px; padding:16px; background:var(--paper-raised);}
+  .authority-card h4{font-size:.95rem; margin-bottom:4px;}
+  .authority-card .role{font-size:.78rem; color:var(--gold-strong); font-weight:600; margin-bottom:8px; display:block;}
+  .authority-card p{font-size:.85rem; color:var(--ink-soft); margin:0;}
+
+  footer.pagefoot{max-width:1180px; margin:0 auto; padding:20px 4px 48px; color:var(--ink-soft); font-size:.78rem; border-top:1px solid var(--line); margin-top:24px;}
+
+  @media (max-width:820px){
+    .layout{grid-template-columns:1fr; padding-top:16px;}
+    nav.side{
+      position:fixed; top:0; left:0; bottom:0; width:270px; background:var(--paper);
+      z-index:50; padding:70px 16px 20px; transform:translateX(-100%); transition:transform .25s ease;
+      overflow-y:auto; border-right:1px solid var(--line);
+    }
+    nav.side.open{transform:translateX(0);}
+    .menu-btn{display:block;}
+    .verify-badge span.long{display:none;}
+  }
+</style>
+</head>
+<body>
+
+
+<header class="top">
+  <div class="top-row">
+    <button class="menu-btn" id="menuBtn" aria-label="Deschide meniul">☰</button>
+    <div class="brand">
+      <div class="brand-mark">§</div>
+      <div class="brand-text">
+        <div class="t1">Ghidul AI Act</div>
+        <div class="t2">Regulamentul (UE) 2024/1689 — pentru juriști din România</div>
+      </div>
+    </div>
+    <div class="verify-badge">
+      <span class="dot"></span>
+      <span class="long">Surse verificate la</span> 17 sept. 2026
+    </div>
+  </div>
+</header>
+
+<div class="backdrop" id="backdrop"></div>
+
+<div class="layout shell">
+  <nav class="side" id="sideNav">
+    <button data-target="acasa" class="active"><span class="n">00</span> Prezentare generală</button>
+    <button data-target="cronologie"><span class="n">01</span> Calendarul aplicării</button>
+    <button data-target="structura"><span class="n">02</span> Structura actului</button>
+    <button data-target="piramida"><span class="n">03</span> Piramida riscului</button>
+    <hr>
+    <button data-target="interzise"><span class="n">04</span> Practici interzise</button>
+    <button data-target="risc-ridicat"><span class="n">05</span> Risc ridicat</button>
+    <button data-target="transparenta"><span class="n">06</span> Transparență</button>
+    <button data-target="gpai"><span class="n">07</span> Modele IA generale</button>
+    <hr>
+    <button data-target="guvernanta"><span class="n">08</span> Sancțiuni</button>
+    <button data-target="romania"><span class="n">09</span> Cadrul din România</button>
+    <button data-target="jurisprudenta"><span class="n">10</span> Jurisprudență</button>
+    <hr>
+    <button data-target="glosar"><span class="n">11</span> Glosar</button>
+    <button data-target="autoevaluare"><span class="n">12</span> Autoevaluare</button>
+    <button data-target="surse"><span class="n">13</span> Surse</button>
+  </nav>
+
+  <main>
+
+    <!-- 00 ACASA -->
+    <section class="panel active" data-panel="acasa">
+      <span class="eyebrow">Regulamentul (UE) 2024/1689</span>
+      <h2>Actul privind inteligența artificială, explicat pentru practica juridică</h2>
+      <p class="lede">Acest ghid traduce în limbaj accesibil arhitectura legală a primului regulament orizontal privind IA din lume, astfel cum a fost modificat prin „Digital Omnibus privind IA” — Regulamentul (UE) 2026/1744, în vigoare de la 27 iulie 2026. Este un instrument de orientare, nu consultanță juridică pentru o speță concretă.</p>
+
+      <div class="section-block grid g3">
+        <div class="card">
+          <span class="art mono">Temei</span>
+          <h3 style="font-size:1rem;margin-top:10px;">Regulamentul (UE) 2024/1689</h3>
+          <p style="font-size:.85rem;color:var(--ink-soft);margin-top:6px;">Parlamentul European și Consiliul, 13 iunie 2024. Publicat în JO L, 12.7.2024. Intrat în vigoare la 1 august 2024.</p>
+        </div>
+        <div class="card">
+          <span class="art mono">Modificare</span>
+          <h3 style="font-size:1rem;margin-top:10px;">Regulamentul (UE) 2026/1744</h3>
+          <p style="font-size:.85rem;color:var(--ink-soft);margin-top:6px;">„Digital Omnibus privind IA”. Semnat 8 iulie 2026, publicat 24 iulie 2026, în vigoare de la 27 iulie 2026 — a amânat termene-cheie și a modificat art. 4, 5, 27 și 50.</p>
+        </div>
+        <div class="card">
+          <span class="art mono">Aplicare deplină</span>
+          <h3 style="font-size:1rem;margin-top:10px;">2 august 2026</h3>
+          <p style="font-size:.85rem;color:var(--ink-soft);margin-top:6px;">Data de aplicare generală — cu excepțiile eșalonate detaliate în secțiunea Calendar.</p>
+        </div>
+      </div>
+
+      <div class="section-block callout warn">
+        <strong>Notă despre acuratețe și actualizare</strong>
+        Baza de cunoștințe a modelului care generează acest ghid este actualizată până în ianuarie 2026. Informațiile de mai jos privind Digital Omnibus (Regulamentul 2026/1744), calendarul revizuit și cadrul instituțional din România au fost verificate prin căutări web efectuate la 17 septembrie 2026 și sunt susținute de surse citate în secțiunea „Surse”. Pentru texte consolidate oficiale, verificați întotdeauna EUR-Lex înainte de a formula o poziție într-un dosar — este posibil să existe acte delegate, standarde armonizate sau ghiduri ale Oficiului pentru IA ulterioare acestei date.
+      </div>
+
+      <div class="section-block">
+        <h3 style="font-size:1.1rem;margin-bottom:12px;">Cum se citește acest ghid</h3>
+        <div class="grid g2">
+          <div class="card" style="box-shadow:none;">
+            <p style="font-size:.87rem;margin:0;"><strong>Pentru orientare rapidă:</strong> parcurgeți Calendarul, Piramida riscului și Cadrul din România — cele trei secțiuni care schimbă cel mai des practica de zi cu zi.</p>
+          </div>
+          <div class="card" style="box-shadow:none;">
+            <p style="font-size:.87rem;margin:0;"><strong>Pentru fundamentare într-un aviz:</strong> folosiți citările articol-cu-articol (etichetele <span class="art">art. 5</span>) și secțiunea Jurisprudență, apoi verificați varianta consolidată pe EUR-Lex.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 01 CRONOLOGIE -->
+    <section class="panel" data-panel="cronologie">
+      <span class="eyebrow">Art. 113 + Regulamentul (UE) 2026/1744</span>
+      <h2>Calendarul aplicării (actualizat cu Digital Omnibus)</h2>
+      <p class="lede">Termenele inițiale din art. 113 au fost recalculate parțial prin Regulamentul (UE) 2026/1744. Click pe fiecare reper pentru detalii. Reperele marcate <span class="tag neutral" style="vertical-align:1px;">omnibus</span> provin din modificarea din 2026.</p>
+
+      <div class="tl" id="timeline"></div>
+    </section>
+
+    <!-- 02 STRUCTURA -->
+    <section class="panel" data-panel="structura">
+      <span class="eyebrow">Arhitectura regulamentului</span>
+      <h2>Structura actului</h2>
+      <p class="lede">O hartă orientativă a titlurilor. Articolele-reper (indicate cu <span class="art" style="vertical-align:1px;">art.</span>) sunt verificate direct; pentru numerotarea exactă a capitolelor mai puțin invocate în practică (titlurile IX–XI), consultați forma consolidată de pe EUR-Lex — link în secțiunea Surse.</p>
+
+      <div class="section-block" id="structureList"></div>
+
+      <div class="section-block callout">
+        <strong>Anexele cele mai relevante pentru practică</strong>
+        Anexa I (legislația de armonizare a Uniunii — determină ce „componente de siguranță” devin sisteme cu risc ridicat), Anexa III (cele 8 categorii de sisteme cu risc ridicat de tip „stand-alone”, detaliate în secțiunea Risc ridicat) și Anexele XI–XIII (documentație tehnică, transparență și criteriile de risc sistemic pentru modelele IA cu scop general).
+      </div>
+    </section>
+
+    <!-- 03 PIRAMIDA -->
+    <section class="panel" data-panel="piramida">
+      <span class="eyebrow">Abordarea bazată pe risc</span>
+      <h2>Piramida riscului</h2>
+      <p class="lede">AI Act nu reglementează „IA” în bloc, ci clasifică fiecare sistem după riscul pe care îl prezintă pentru sănătate, siguranță și drepturi fundamentale. Click pe un nivel al piramidei pentru detalii.</p>
+
+      <div class="pyramid-wrap">
+        <div>
+          <button class="pyr-tier" data-tier="prohibited">Risc inacceptabil — interzis</button>
+          <button class="pyr-tier" data-tier="high">Risc ridicat — reglementat strict</button>
+          <button class="pyr-tier" data-tier="limited">Risc limitat — transparență</button>
+          <button class="pyr-tier" data-tier="minimal">Risc minim — fără obligații specifice</button>
+          <div class="pyr-note">+ regim separat pentru modele IA cu scop general (GPAI), transversal piramidei</div>
+        </div>
+        <div class="card pyr-detail" id="pyrDetail"></div>
+      </div>
+    </section>
+
+    <!-- 04 INTERZISE -->
+    <section class="panel" data-panel="interzise">
+      <span class="eyebrow"><span class="art">art. 5</span> · Titlul II</span>
+      <h2>Practici de IA interzise</h2>
+      <p class="lede">Art. 5 enumeră exhaustiv practicile pe care niciun operator din UE nu le poate desfășura, indiferent de consimțământ sau de clauze contractuale. Aplicabile din <strong>2 februarie 2025</strong>. Regulamentul (UE) 2026/1744 a adăugat o a noua interdicție (pct. 9).</p>
+
+      <div class="section-block" id="prohibitedList"></div>
+    </section>
+
+    <!-- 05 RISC RIDICAT -->
+    <section class="panel" data-panel="risc-ridicat">
+      <span class="eyebrow"><span class="art">art. 6–27</span> · Titlul III</span>
+      <h2>Sisteme de IA cu risc ridicat</h2>
+      <p class="lede">Cea mai amplă și mai complexă parte a regulamentului. Cuprinde clasificarea (art. 6–7), cerințele tehnice (art. 8–15), obligațiile operatorilor (art. 16–27) și evaluarea conformității.</p>
+
+      <div class="section-block">
+        <h3 style="font-size:1.05rem;margin-bottom:10px;">Cum se clasifică un sistem (art. 6)</h3>
+        <div class="grid g2">
+          <div class="card">
+            <span class="tag high">Art. 6 alin. (1)</span>
+            <p style="font-size:.87rem;margin-top:10px;">Sistemul este componentă de siguranță a unui produs — sau este el însuși un produs — reglementat de legislația de armonizare a Uniunii din <strong>Anexa I</strong> (de ex. dispozitive medicale, jucării, ascensoare, mașini, aviație), și produsul trebuie să fie supus unei evaluări de conformitate de către terți. <span class="art mono" style="margin-top:8px;display:inline-block;">aplicare din 2 aug. 2028</span></p>
+          </div>
+          <div class="card">
+            <span class="tag high">Art. 6 alin. (2)</span>
+            <p style="font-size:.87rem;margin-top:10px;">Sistemul se încadrează într-un caz de utilizare de tip „stand-alone" enumerat exhaustiv în <strong>Anexa III</strong> — cele 8 categorii detaliate mai jos. <span class="art mono" style="margin-top:8px;display:inline-block;">aplicare din 2 dec. 2027</span></p>
+          </div>
+        </div>
+        <div class="section-block callout" style="margin-top:14px;">
+          <strong>Excepția de „risc nesemnificativ" — art. 6 alin. (3)</strong>
+          Un furnizor poate considera un sistem din Anexa III ca nefiind cu risc ridicat dacă acesta îndeplinește condiții restrictive (ex: doar o sarcină procedurală restrânsă, doar îmbunătățește rezultatul unei activități umane deja finalizate, nu influențează substanțial decizia). Excepția trebuie documentată și, la cerere, comunicată autorității de supraveghere a pieței — nu este o auto-exceptare tacită.
+        </div>
+      </div>
+
+      <div class="section-block">
+        <h3 style="font-size:1.05rem;margin-bottom:10px;">Cele 8 categorii din Anexa III</h3>
+        <div id="annexIIIList"></div>
+      </div>
+
+      <div class="section-block">
+        <h3 style="font-size:1.05rem;margin-bottom:10px;">Obligațiile principale ale operatorilor (art. 16–27)</h3>
+        <div class="grid g2">
+          <div class="card">
+            <span class="art">art. 16</span>
+            <p style="font-size:.86rem;margin-top:8px;"><strong>Furnizorul</strong> instituie sistem de management al riscului, guvernanță a datelor, documentație tehnică (Anexa IV), înregistrare automată a evenimentelor (logging), sistem de management al calității și marcaj CE.</p>
+          </div>
+          <div class="card">
+            <span class="art">art. 26</span>
+            <p style="font-size:.86rem;margin-top:8px;"><strong>Utilizatorul implementator (deployer)</strong> — inclusiv cabinete de avocatură sau societăți care folosesc un sistem cu risc ridicat — trebuie să asigure supraveghere umană competentă, să monitorizeze funcționarea și să informeze furnizorul/autoritatea despre riscuri.</p>
+          </div>
+          <div class="card">
+            <span class="art">art. 27</span>
+            <p style="font-size:.86rem;margin-top:8px;"><strong>Evaluarea impactului asupra drepturilor fundamentale (FRIA)</strong> — obligatorie pentru organismele de drept public și entitățile private care prestează servicii publice esențiale (bănci, asigurători) înainte de a pune în funcțiune un sistem din Anexa III. Modificată prin Omnibus 2026/1744 pentru flexibilizarea metodologiei.</p>
+          </div>
+          <div class="card">
+            <span class="art">art. 6 alin. (3) coroborat cu art. 49</span>
+            <p style="font-size:.86rem;margin-top:8px;"><strong>Înregistrarea</strong> sistemului în baza de date UE (art. 71) — inclusiv pentru sistemele auto-exceptate ca „risc nesemnificativ", pentru trasabilitate.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 06 TRANSPARENTA -->
+    <section class="panel" data-panel="transparenta">
+      <span class="eyebrow"><span class="art">art. 50</span> · Titlul IV</span>
+      <h2>Obligații de transparență</h2>
+      <p class="lede">Pentru sisteme care nu sunt neapărat „cu risc ridicat", dar pot induce în eroare dacă interacțiunea cu IA nu este dezvăluită. Aplicabile de la <strong>2 august 2026</strong> — nedeplasate de Digital Omnibus.</p>
+
+      <div class="section-block grid g2">
+        <div class="card">
+          <span class="tag limited">Art. 50 alin. (1)</span>
+          <h3 style="font-size:.95rem;margin-top:10px;">Chatboți și asistenți conversaționali</h3>
+          <p style="font-size:.85rem;color:var(--ink-soft);margin-top:6px;">Furnizorul trebuie să informeze persoana fizică că interacționează cu un sistem IA, cu excepția cazului în care acest lucru este evident dintr-o perspectivă rezonabil informată.</p>
+        </div>
+        <div class="card">
+          <span class="tag limited">Art. 50 alin. (2)-(3)</span>
+          <h3 style="font-size:.95rem;margin-top:10px;">Conținut sintetic ("deepfake")</h3>
+          <p style="font-size:.85rem;color:var(--ink-soft);margin-top:6px;">Conținutul audio, imagine, video generat/manipulat de IA trebuie marcat lizibil automat (watermarking). Sistemele deja pe piață înainte de 2 aug. 2026 beneficiază de un termen de grație până la <strong>2 decembrie 2026</strong> (adăugat prin Omnibus).</p>
+        </div>
+        <div class="card">
+          <span class="tag limited">Art. 50 alin. (4)</span>
+          <h3 style="font-size:.95rem;margin-top:10px;">Recunoașterea emoțiilor / categorizare biometrică</h3>
+          <p style="font-size:.85rem;color:var(--ink-soft);margin-top:6px;">Persoanele expuse unui sistem de recunoaștere a emoțiilor sau de categorizare biometrică (permise, dar neinterzise de art. 5) trebuie informate despre funcționarea acestuia.</p>
+        </div>
+        <div class="card">
+          <span class="tag limited">Art. 50 alin. (4) teza a doua</span>
+          <h3 style="font-size:.95rem;margin-top:10px;">Text generat de IA de interes public</h3>
+          <p style="font-size:.85rem;color:var(--ink-soft);margin-top:6px;">Textul generat/manipulat de IA și publicat pentru a informa publicul asupra unor chestiuni de interes public trebuie marcat, cu excepția cazului în care conținutul a trecut printr-un proces de revizuire editorială umană și există responsabilitate editorială clară (relevant pentru presă și publicații juridice).</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 07 GPAI -->
+    <section class="panel" data-panel="gpai">
+      <span class="eyebrow"><span class="art">art. 51–56</span> · Titlul V</span>
+      <h2>Modele de IA cu scop general (GPAI)</h2>
+      <p class="lede">Regim separat pentru modelele-fundație (de tip GPT, Gemini, Llama etc.) — indiferent cum sunt integrate în produse concrete. În vigoare din <strong>2 august 2025</strong>, neafectat de amânările Omnibus pentru sistemele cu risc ridicat.</p>
+
+      <div class="section-block grid g2">
+        <div class="card">
+          <span class="tag gpai">Regimul general — art. 53</span>
+          <p style="font-size:.86rem;margin-top:10px;">Toți furnizorii de modele GPAI: documentație tehnică (Anexa XI), informații pentru furnizorii din aval (Anexa XII), politică de respectare a dreptului de autor al UE, rezumat public al conținutului folosit la instruire.</p>
+        </div>
+        <div class="card">
+          <span class="tag gpai">Risc sistemic — art. 55</span>
+          <p style="font-size:.86rem;margin-top:10px;">Obligații suplimentare (evaluare adversarială, raportare incidente grave, cibersecuritate) pentru modele care ating pragul de calcul cumulat pentru instruire de <strong class="mono">10²⁵ FLOPs</strong> (art. 51 alin. (2), Anexa XIII) sau sunt desemnate de Comisie ca având capacități cu impact ridicat.</p>
+        </div>
+        <div class="card">
+          <span class="tag gpai">Coduri de practică — art. 56</span>
+          <p style="font-size:.86rem;margin-top:10px;">Aderarea la un cod de practică aprobat de Oficiul pentru IA constituie o prezumție de conformitate, până la adoptarea unor standarde armonizate.</p>
+        </div>
+        <div class="card">
+          <span class="tag neutral">Sandbox-uri — art. 57–63</span>
+          <p style="font-size:.86rem;margin-top:10px;">Termenul pentru înființarea deplină a mediilor de testare reglementată de către statele membre a fost prelungit prin Omnibus până la <strong>2 august 2027</strong>.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 08 GUVERNANTA/SANCTIUNI -->
+    <section class="panel" data-panel="guvernanta">
+      <span class="eyebrow"><span class="art">art. 64–70, 99–101</span> · Titlurile VII, XII</span>
+      <h2>Guvernanță și sancțiuni</h2>
+      <p class="lede">Aplicarea este distribuită pe verticală (Oficiul European pentru IA, Comitetul European pentru IA) și pe orizontală, în fiecare stat membru (autorități naționale de supraveghere a pieței).</p>
+
+      <div class="section-block grid g2">
+        <div class="card">
+          <span class="art">art. 64–66</span>
+          <h3 style="font-size:.95rem;margin-top:10px;">Oficiul pentru IA (AI Office)</h3>
+          <p style="font-size:.85rem;color:var(--ink-soft);margin-top:6px;">Structură în cadrul Comisiei Europene, competentă în special asupra modelelor GPAI și, prin extindere din Omnibus 2026, asupra sistemelor construite de furnizorii de GPAI și interacțiunii cu platformele online foarte mari (VLOP) reglementate de DSA.</p>
+        </div>
+        <div class="card">
+          <span class="art">art. 65–68</span>
+          <h3 style="font-size:.95rem;margin-top:10px;">Comitetul European pentru IA</h3>
+          <p style="font-size:.85rem;color:var(--ink-soft);margin-top:6px;">Coordonează autoritățile naționale, emite recomandări și ghiduri de interpretare uniformă — un reper util pentru avocați atunci când o poziție a autorității române diferă de practica altor state membre.</p>
+        </div>
+      </div>
+
+      <div class="section-block">
+        <h3 style="font-size:1.05rem;margin-bottom:6px;">Sancțiuni (art. 99)</h3>
+        <table class="pen">
+          <tr><th>Încălcare</th><th>Amendă maximă</th></tr>
+          <tr><td>Practici interzise (art. 5)</td><td class="mono"><strong>35.000.000 €</strong> sau <strong>7%</strong> din cifra de afaceri anuală mondială — se aplică valoarea mai mare</td></tr>
+          <tr><td>Nerespectarea altor obligații (ex.: cerințe risc ridicat, transparență, GPAI)</td><td class="mono"><strong>15.000.000 €</strong> sau <strong>3%</strong> din cifra de afaceri anuală mondială</td></tr>
+          <tr><td>Informații incorecte, incomplete sau înșelătoare furnizate autorităților</td><td class="mono"><strong>7.500.000 €</strong> sau <strong>1%</strong> din cifra de afaceri anuală mondială</td></tr>
+        </table>
+        <p style="font-size:.8rem;color:var(--ink-soft);margin-top:10px;">Pentru IMM-uri și start-up-uri se aplică <em>plafonul mai mic</em> dintre cele două valori (nu cel mai mare). Regimul de sancțiuni pentru furnizorii de modele GPAI este reglementat distinct la art. 101.</p>
+      </div>
+    </section>
+
+    <!-- 09 ROMANIA -->
+    <section class="panel" data-panel="romania">
+      <span class="eyebrow">Cadrul instituțional național</span>
+      <h2>Aplicarea AI Act în România</h2>
+      <p class="lede">Situație verificată la 17 septembrie 2026: România a propus, printr-un memorandum de guvern, arhitectura instituțională, dar legea națională de punere în aplicare nu era încă adoptată. Verificați stadiul actualizat înainte de a consilia un client.</p>
+
+      <div class="section-block callout warn">
+        <strong>Atenție — lacună legislativă națională</strong>
+        Potrivit comunicatului oficial al ANCOM, sancțiunile și mecanismele complete de control la nivel național vor putea fi aplicate de autoritățile române abia <em>după</em> intrarea în vigoare a legislației naționale de implementare — care, la data verificării, era încă în lucru. Regulamentul UE este direct aplicabil ca atare, dar componenta de supraveghere/sancționare internă depinde de acest act național.
+      </div>
+
+      <div class="section-block grid g2" id="authorityGrid"></div>
+    </section>
+
+    <!-- 10 JURISPRUDENTA -->
+    <section class="panel" data-panel="jurisprudenta">
+      <span class="eyebrow">CJUE și CEDO</span>
+      <h2>Jurisprudență relevantă</h2>
+      <p class="lede">AI Act este prea recent pentru a avea propria jurisprudență consistentă a CJUE. Instanțele europene aplică însă deja principii direct transferabile — mai ales din materia GDPR și a supravegherii biometrice — pe care un avocat le poate folosi ca argument analog.</p>
+
+      <div class="section-block" id="caseList"></div>
+
+      <div class="section-block callout">
+        <strong>Notă de doctrină</strong>
+        Interpretarea articolului 6 alin. (3) (excepția „risc nesemnificativ") și a marjei de apreciere a furnizorilor la auto-clasificare este disputată în doctrină: unii autori (de ex. comentarii publicate în literatura de compliance UE) o citesc restrictiv, ca excepție care trebuie justificată documentat de la caz la caz; alte poziții doctrinare o consideră un mecanism de proporționalitate menit să evite suprainclusivitatea Anexei III. Nu există încă o hotărâre CJUE care să fixeze un standard unic — semnalăm ambele interpretări pentru ca dumneavoastră să decideți, în funcție de speță, care e mai bine argumentată.
+      </div>
+    </section>
+
+    <!-- 11 GLOSAR -->
+    <section class="panel" data-panel="glosar">
+      <span class="eyebrow">Terminologie</span>
+      <h2>Glosar de termeni</h2>
+      <p class="lede">Click pe un termen pentru definiție. Folosiți căutarea pentru a filtra rapid.</p>
+      <div class="search-row">
+        <input type="text" id="glossarySearch" placeholder="Caută un termen (ex: risc sistemic, FRIA, deployer)…" autocomplete="off">
+      </div>
+      <div class="flash-grid" id="glossaryGrid"></div>
+    </section>
+
+    <!-- 12 AUTOEVALUARE -->
+    <section class="panel" data-panel="autoevaluare">
+      <span class="eyebrow">Verificare rapidă</span>
+      <h2>Autoevaluare</h2>
+      <p class="lede">Șase întrebări pentru a fixa reperele esențiale ale actului. Nu se salvează nimic — este doar un exercițiu de recapitulare.</p>
+      <div id="quizWrap"></div>
+      <div class="quiz-actions">
+        <button class="btn" id="checkQuiz">Verifică răspunsurile</button>
+        <span id="quizScore"></span>
+      </div>
+    </section>
+
+    <!-- 13 SURSE -->
+    <section class="panel" data-panel="surse">
+      <span class="eyebrow">Verificabilitate</span>
+      <h2>Surse și actualizări</h2>
+      <p class="lede">Toate afirmațiile din acest ghid privind textul original al Regulamentului (UE) 2024/1689, modificările introduse prin Regulamentul (UE) 2026/1744 și cadrul instituțional românesc pot fi verificate la sursele de mai jos, consultate la 17 septembrie 2026.</p>
+
+      <ul class="src-list">
+        <li><span class="k">Text oficial consolidat</span><a href="https://eur-lex.europa.eu/eli/reg/2024/1689/oj/eng" target="_blank" rel="noopener">EUR-Lex — Regulamentul (UE) 2024/1689</a></li>
+        <li><span class="k">Actul modificator</span><a href="https://eur-lex.europa.eu/eli/reg/2026/1744/oj/eng" target="_blank" rel="noopener">EUR-Lex — Regulamentul (UE) 2026/1744 (Digital Omnibus privind IA)</a></li>
+        <li><span class="k">Analiză termene revizuite</span><a href="https://www.whitecase.com/insight-alert/eu-ai-omnibus-enters-force-amending-ai-act" target="_blank" rel="noopener">White & Case — EU AI Omnibus enters into force, amending the AI Act</a></li>
+        <li><span class="k">Analiză amendamente</span><a href="https://www.freshfields.com/en/our-thinking/blogs/technology-quotient/eu-ai-act-unpacked-34-the-final-digital-omnibus-on-ai-key-amendments-to-the-a-102nber" target="_blank" rel="noopener">Freshfields — EU AI Act unpacked #34: the final Digital Omnibus on AI</a></li>
+        <li><span class="k">Sancțiuni, art. 99</span><a href="https://artificialintelligenceact.eu/article/99/" target="_blank" rel="noopener">artificialintelligenceact.eu — Article 99: Penalties</a></li>
+        <li><span class="k">Autorități competente în România</span><a href="https://www.ancom.ro/en/about-us/media-en/press-releases/artificial-intelligence-act-in-romania-current-state-of-the-implementation-framework/" target="_blank" rel="noopener">ANCOM — Artificial Intelligence Act in Romania: current state of the implementation framework</a></li>
+        <li><span class="k">Autorități competente în România (context)</span><a href="https://www.juridice.ro/820036/autoritatile-nationale-competente-pentru-aplicarea-regulamentului-ai.html" target="_blank" rel="noopener">JURIDICE.ro — Autoritățile naționale competente pentru aplicarea Regulamentului AI</a></li>
+        <li><span class="k">Anexa III — categorii de risc ridicat</span><a href="https://www.legalithm.com/en/ai-act-guide/annex-iii-high-risk-areas" target="_blank" rel="noopener">Legalithm — Annex III high-risk areas</a></li>
+        <li><span class="k">CJUE, C-634/21</span><a href="https://curia.europa.eu/juris/liste.jsf?num=C-634/21" target="_blank" rel="noopener">CJUE — SCHUFA Holding (Scoring), C-634/21, 7 decembrie 2023</a></li>
+        <li><span class="k">CEDO, cererea nr. 11519/20</span><a href="https://hudoc.echr.coe.int/?i=002-14142" target="_blank" rel="noopener">CEDO — Glukhin împotriva Rusiei, HUDOC</a></li>
+      </ul>
+
+      <div class="section-block callout">
+        <strong>Cum verificați dumneavoastră o actualizare</strong>
+        Deschideți linkul EUR-Lex de mai sus și verificați secțiunea „Informații despre document” → „Acte care modifică prezentul act” pentru orice regulament de punere în aplicare, act delegat sau rectificare ulterioară datei de verificare indicate în acest ghid.
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<footer class="pagefoot shell">
+  Ghid informativ, fără caracter de consultanță juridică individuală. Generat pe baza surselor verificate la 17 septembrie 2026 · cunoștințe de bază ale modelului actualizate până în ianuarie 2026.
+</footer>
+
+<script>
+(function(){
+
+  // ---------- DATA ----------
+  var timelineData = [
+    {date:"1 august 2024", omnibus:false, title:"Intrarea în vigoare a Regulamentului (UE) 2024/1689", detail:"La 20 de zile de la publicarea în Jurnalul Oficial (12 iulie 2024). Termenele următoare se calculează de la această dată, potrivit art. 113."},
+    {date:"2 februarie 2025", omnibus:false, title:"Se aplică Titlul I (dispoziții generale) și Titlul II (practici interzise, art. 5)", detail:"La 6 luni de la intrarea în vigoare. Include și obligația generală de alfabetizare în domeniul IA (art. 4)."},
+    {date:"2 august 2025", omnibus:false, title:"Se aplică guvernanța, modelele IA cu scop general (GPAI) și regimul sancțiunilor", detail:"La 12 luni de la intrarea în vigoare: Titlul V (art. 51-56, GPAI), Titlul VII (guvernanță), capitolul privind autoritățile de notificare, plus art. 78 (confidențialitate) și Titlul XII (confidențialitate și sancțiuni), cu excepția art. 101."},
+    {date:"8 iulie 2026", omnibus:true, title:"Semnarea Regulamentului (UE) 2026/1744 („Digital Omnibus privind IA”)", detail:"Acord politic Parlament–Consiliu finalizat în mai 2026, urmat de vot formal: Parlamentul European (16 iunie 2026) și Consiliul UE (29 iunie 2026)."},
+    {date:"27 iulie 2026", omnibus:true, title:"Intrarea în vigoare a Regulamentului (UE) 2026/1744", detail:"Publicat în JO la 24 iulie 2026. Amână termenele pentru sistemele cu risc ridicat, extinde unele interdicții din art. 5 și flexibilizează art. 4 și art. 27."},
+    {date:"2 august 2026", omnibus:false, title:"Aplicare generală a AI Act + obligațiile de transparență (art. 50)", detail:"Data implicită de aplicare deplină (24 luni de la intrarea în vigoare). Obligațiile de transparență/marcaj al conținutului generat de IA (art. 50) NU au fost amânate de Omnibus și se aplică de la această dată."},
+    {date:"2 decembrie 2026", omnibus:true, title:"Termen tranzitoriu: noile interdicții privind conținut intim nesolicitat/CSAM și perioadă de grație pentru marcaj", detail:"Interdicția adăugată la art. 5 (generarea de materiale ce constituie abuz sexual asupra copiilor sau conținut intim generat/manipulat fără consimțământ, de tip „deepfake”) beneficiază de acest termen pentru măsuri tehnice; sistemele de conținut sintetic aflate deja pe piață înainte de 2 august 2026 au până la această dată perioadă de grație pentru marcaj (art. 50)."},
+    {date:"2 august 2027", omnibus:true, title:"Termen prelungit pentru mediile de testare reglementată (sandbox-uri)", detail:"Termenul-limită pentru înființarea deplină a sandbox-urilor naționale de reglementare AI (Titlul VI, art. 57 și urm.) a fost prelungit prin Omnibus."},
+    {date:"2 decembrie 2027", omnibus:true, title:"Se aplică obligațiile pentru sistemele cu risc ridicat „stand-alone” din Anexa III", detail:"Amânat prin Omnibus de la termenul general de 2 august 2026. Vizează cele 8 categorii din Anexa III: biometrie, infrastructuri critice, educație, ocupare a forței de muncă, servicii esențiale, aplicarea legii, migrație/azil/frontiere, justiție și procese democratice."},
+    {date:"2 august 2028", omnibus:true, title:"Se aplică obligațiile pentru sistemele cu risc ridicat integrate în produse (Anexa I)", detail:"Amânat prin Omnibus de la termenul inițial de 2 august 2027 (36 de luni, art. 6 alin. (1)). Vizează sistemele care sunt componente de siguranță ale produselor reglementate de legislația de armonizare din Anexa I (dispozitive medicale, jucării, ascensoare, mașini, aviație etc.)."}
+  ];
+
+  var structureData = [
+    {t:"Titlul I", h:"Dispoziții generale", art:"art. 1–4", d:"Obiect, domeniu de aplicare, definiții (inclusiv definiția „sistemului IA”, alineată la standardul OCDE) și obligația de alfabetizare în domeniul IA."},
+    {t:"Titlul II", h:"Practici de IA interzise", art:"art. 5", d:"Lista exhaustivă a practicilor interzise necondiționat — detaliată în secțiunea dedicată."},
+    {t:"Titlul III", h:"Sisteme de IA cu risc ridicat", art:"art. 6–49", d:"Cap. 1 Clasificare (6–7) · Cap. 2 Cerințe tehnice (8–15) · Cap. 3 Obligațiile furnizorilor și utilizatorilor implementatori (16–27) · Cap. 4 Autorități de notificare și organisme notificate (28–39) · Cap. 5 Standarde, evaluarea conformității, înregistrare (40–49)."},
+    {t:"Titlul IV", h:"Obligații de transparență", art:"art. 50", d:"Obligații de informare pentru chatboți, conținut sintetic, recunoașterea emoțiilor și categorizare biometrică."},
+    {t:"Titlul V", h:"Modele de IA cu scop general", art:"art. 51–56", d:"Cap. 1 Norme de clasificare (51) · Cap. 2 Obligațiile furnizorilor de modele GPAI, inclusiv regimul suplimentar pentru risc sistemic (52–56)."},
+    {t:"Titlul VI", h:"Măsuri de sprijinire a inovării", art:"art. 57–63", d:"Sandbox-uri de reglementare, testare în condiții reale, măsuri pentru IMM-uri și start-up-uri."},
+    {t:"Titlul VII", h:"Guvernanță", art:"art. 64–70", d:"Oficiul European pentru IA, Comitetul European pentru IA, forumul consultativ, panelul științific independent și autoritățile naționale competente."},
+    {t:"Titlul VIII", h:"Baza de date UE", art:"art. 71", d:"Baza de date UE pentru sistemele de IA cu risc ridicat înregistrate — publică în mare parte."},
+    {t:"Titlurile IX–XI", h:"Monitorizare post-comercializare, supraveghere a pieței, coduri de conduită, delegare de competențe", art:"art. ~72–98 (orientativ)", d:"Include monitorizarea post-comercializare de către furnizori, raportarea incidentelor grave, procedurile de supraveghere a pieței și de salvgardare a Uniunii, precum și codurile de conduită voluntare. Numerotarea exactă a capitolelor trebuie verificată în forma consolidată — nu este reprodusă aici cu precizie articol-cu-articol."},
+    {t:"Titlul XII", h:"Confidențialitate și sancțiuni", art:"art. 78, 99–101", d:"Regimul sancțiunilor administrative — detaliat în secțiunea Sancțiuni."},
+    {t:"Titlul XIII", h:"Dispoziții finale", art:"art. 111–113", d:"Dispoziții tranzitorii, evaluare și revizuire, intrarea în vigoare și aplicarea eșalonată (art. 113)."}
+  ];
+
+  var prohibitedData = [
+    {n:1, h:"Tehnici subliminale, manipulatoare sau înșelătoare", d:"Sisteme care folosesc tehnici subliminale ce acționează dincolo de conștientul unei persoane, sau tehnici manipulatoare/înșelătoare, cu obiectivul sau efectul de a distorsiona semnificativ comportamentul, cauzând sau putând cauza un prejudiciu considerabil."},
+    {n:2, h:"Exploatarea vulnerabilităților", d:"Exploatarea vulnerabilităților legate de vârstă, dizabilitate sau situație socială/economică specifică, cu efectul de a distorsiona comportamentul într-un mod prejudiciabil."},
+    {n:3, h:"Evaluarea socială (social scoring)", d:"Evaluarea sau clasificarea persoanelor pe baza comportamentului social sau a unor caracteristici personale, dacă rezultă un tratament defavorabil nejustificat sau disproporționat, în contexte fără legătură cu cele în care datele au fost generate."},
+    {n:4, h:"Evaluarea/predicția riscului penal individual", d:"Evaluarea riscului ca o persoană să comită o infracțiune, bazată exclusiv pe profilarea sau pe trăsăturile de personalitate ale acesteia — fără a susține o evaluare umană bazată pe fapte obiective verificabile."},
+    {n:5, h:"Extragerea nețintită de imagini faciale", d:"Crearea sau extinderea bazelor de date de recunoaștere facială prin extragerea nețintită (scraping) a imaginilor faciale de pe internet sau din înregistrări video de supraveghere."},
+    {n:6, h:"Recunoașterea emoțiilor la locul de muncă și în educație", d:"Deducerea emoțiilor unei persoane la locul de muncă și în instituțiile de învățământ — cu excepții limitate pentru motive medicale sau de siguranță."},
+    {n:7, h:"Categorizarea biometrică sensibilă", d:"Sisteme care deduc rasa, opiniile politice, apartenența sindicală, convingerile religioase/filozofice sau orientarea sexuală pe baza datelor biometrice — cu o excepție restrânsă pentru etichetarea/filtrarea seturilor de date biometrice obținute legal în activitatea de aplicare a legii."},
+    {n:8, h:"Identificarea biometrică de la distanță „în timp real” în spații publice", d:"Interzisă în scopul aplicării legii, cu excepții stricte (căutarea victimelor unor infracțiuni specifice, prevenirea unei amenințări iminente la adresa vieții, identificarea suspecților în infracțiuni grave enumerate în Anexa II), condiționate de autorizare judiciară sau administrativă prealabilă."},
+    {n:9, h:"Conținut cu abuz sexual asupra copiilor sau conținut intim nesolicitat („deepfake”)", d:"Adăugat prin Regulamentul (UE) 2026/1744: generarea sau manipularea, prin sisteme de IA, a materialelor ce constituie abuz sexual asupra copiilor, precum și a conținutului intim/sexual explicit generat sau manipulat fără consimțământul persoanei reprezentate (aplicații de tip „nudifier”)."}
+  ];
+
+  var annexIIIData = [
+    {h:"1. Biometrie", d:"Identificare biometrică de la distanță (altfel decât cea interzisă la art. 5), categorizare biometrică după atribute sensibile, recunoașterea emoțiilor."},
+    {h:"2. Infrastructuri critice", d:"Sisteme utilizate ca element de siguranță în gestionarea traficului rutier și în furnizarea de apă, gaz, energie termică, electricitate și infrastructură digitală critică."},
+    {h:"3. Educație și formare profesională", d:"Sisteme care determină accesul, admiterea sau evaluarea rezultatelor în instituții de învățământ, inclusiv monitorizarea comportamentului la examene."},
+    {h:"4. Ocuparea forței de muncă și gestionarea lucrătorilor", d:"Recrutare, selecție, decizii privind încetarea/promovarea raporturilor de muncă, alocarea sarcinilor și monitorizarea performanței lucrătorilor."},
+    {h:"5. Servicii esențiale private și publice", d:"Evaluarea eligibilității pentru prestații și servicii publice esențiale, evaluarea bonității/scoring de credit, tarifarea asigurărilor de viață și sănătate, servicii de urgență."},
+    {h:"6. Aplicarea legii", d:"Evaluarea riscului de recidivă, poligrafe, evaluarea fiabilității probelor, profilarea în cursul detectării/investigării/urmăririi infracțiunilor — cu garanții procedurale stricte."},
+    {h:"7. Migrație, azil și gestionarea controlului la frontiere", d:"Poligrafe, evaluarea riscurilor de securitate/migrație/sănătate, examinarea cererilor de azil/viză/permis de ședere, supravegherea la frontieră."},
+    {h:"8. Administrarea justiției și procese democratice", d:"Sisteme destinate să asiste o autoritate judiciară în cercetarea și interpretarea faptelor și a legii, precum și sisteme utilizate pentru a influența rezultatul unor alegeri/referendumuri sau comportamentul de vot (cu excepția instrumentelor administrative auxiliare)."}
+  ];
+
+  var authorityData = [
+    {n:"ANCOM", role:"Autoritate națională de supraveghere a pieței și punct unic de contact", d:"Propusă, printr-un memorandum de guvern, ca autoritate centrală de coordonare pentru AI Act în România. Rol de supraveghere generală a pieței, similar rolului pe care îl are deja pentru alte regulamente sectoriale de telecomunicații/digital."},
+    {n:"ASF și BNR", role:"Autorități de supraveghere a pieței pentru sectorul financiar", d:"Autoritatea de Supraveghere Financiară și Banca Națională a României — competente pentru sistemele de IA cu risc ridicat utilizate în servicii financiare, bancare și de asigurări (ex.: scoring de credit, subscriere asigurări)."},
+    {n:"ANSPDCP", role:"Autoritate de supraveghere pentru biometrie, aplicarea legii și justiție", d:"Autoritatea Națională de Supraveghere a Prelucrării Datelor cu Caracter Personal — competentă pentru sistemele IA cu risc ridicat din domeniul biometriei utilizate de autorități de aplicare a legii, migrație/azil/frontiere și justiție/procese democratice — o extensie firească a rolului său actual în materie de protecție a datelor."},
+    {n:"Alte autorități sectoriale", role:"ANPC, Inspecția Muncii și altele", d:"Autoritatea Națională pentru Protecția Consumatorilor și Inspecția Muncii figurează, potrivit propunerilor guvernamentale, printre autoritățile sectoriale de supraveghere a pieței pentru domeniile lor de competență (protecția consumatorilor, respectiv relații de muncă)."}
+  ];
+
+  var caseData = [
+    {tag:"CJUE", cit:"C-634/21, SCHUFA Holding (Scoring), 7 decembrie 2023", h:"Profilare automatizată și scoring de credit", d:"CJUE a decis că stabilirea automatizată, de către o agenție de rating precum SCHUFA, a unui scor de probabilitate privind capacitatea de plată a unei persoane constituie „decizie individuală automatizată” în sensul art. 22 din RGPD atunci când o bancă terță se bazează determinant pe acest scor pentru a acorda/refuza un credit. Relevanță pentru AI Act: întărește argumentul că sistemele de scoring din categoria „servicii esențiale” (Anexa III pct. 5) trebuie tratate cu formalismul unei decizii automatizate cu efecte juridice, inclusiv sub aspectul dreptului la explicație și la intervenție umană.", link:"https://curia.europa.eu/juris/liste.jsf?num=C-634/21"},
+    {tag:"CEDO", cit:"Glukhin împotriva Rusiei, cererea nr. 11519/20, hotărârea din 2023 (Secția a III-a)", h:"Recunoaștere facială și proporționalitate", d:"CEDO a constatat violarea art. 8 (dreptul la respectarea vieții private) și art. 10 (libertatea de exprimare) din Convenție prin utilizarea tehnologiei de recunoaștere facială pentru identificarea și sancționarea unui protestatar solitar, calificând tehnologia ca fiind „deosebit de intrusivă”. Relevanță pentru AI Act: oferă un standard de proporționalitate transferabil pentru interpretarea strictă a excepțiilor de la interdicția identificării biometrice de la distanță (art. 5 alin. (1) lit. (h)) și a categorizării biometrice.", link:"https://hudoc.echr.coe.int/?i=002-14142"}
+  ];
+
+  var glossaryData = [
+    {t:"Sistem de IA", d:"Definit la art. 3 pct. 1: un sistem bazat pe mașini, proiectat să funcționeze cu niveluri variabile de autonomie și care poate prezenta adaptabilitate după implementare, care, pentru obiective explicite sau implicite, deduce din date de intrare cum să genereze rezultate (predicții, conținut, recomandări, decizii) care pot influența medii fizice sau virtuale."},
+    {t:"Furnizor (provider)", d:"Persoana fizică/juridică care dezvoltă un sistem IA (sau un model GPAI) ori îl introduce pe piață/pune în funcțiune sub numele sau marca proprie — își asumă cele mai extinse obligații din regulament."},
+    {t:"Utilizator implementator (deployer)", d:"Persoana fizică/juridică care utilizează un sistem IA sub autoritatea proprie, în context profesional — de exemplu, un cabinet de avocatură care folosește un instrument de scoring al riscului litigiilor."},
+    {t:"Risc sistemic", d:"Riscul specific capacităților cu impact ridicat ale unui model GPAI, care se poate propaga la scara întregului lanț valoric — prezumat, printre altele, la un prag de calcul cumulat pentru instruire de peste 10²⁵ FLOPs (art. 51 alin. (2))."},
+    {t:"FRIA", d:"Fundamental Rights Impact Assessment — evaluarea impactului asupra drepturilor fundamentale, obligatorie potrivit art. 27 pentru anumiți utilizatori implementatori (organisme de drept public, prestatori de servicii esențiale) înainte de utilizarea unui sistem cu risc ridicat din Anexa III."},
+    {t:"Organism notificat", d:"Entitate independentă de evaluare a conformității, desemnată de o autoritate națională de notificare, care verifică respectarea cerințelor pentru anumite sisteme cu risc ridicat (art. 28–39)."},
+    {t:"Marcaj CE", d:"Marcajul care atestă conformitatea unui sistem de IA cu risc ridicat cu cerințele regulamentului, aplicat de furnizor pe baza declarației UE de conformitate (Anexa V)."},
+    {t:"Model GPAI cu scop general", d:"Un model de IA, inclusiv atunci când este instruit cu o cantitate mare de date folosind auto-supravegherea la scară largă, care prezintă generalitate semnificativă și este capabil să execute competent o gamă largă de sarcini distincte, indiferent de modul în care este introdus pe piață (art. 3 pct. 63)."},
+    {t:"Sandbox de reglementare", d:"Mediu controlat, instituit de o autoritate națională competentă, care permite dezvoltarea, testarea și validarea sistemelor IA inovatoare sub supraveghere reglementară, înainte de introducerea pe piață (art. 57–61)."},
+    {t:"Oficiul pentru IA (AI Office)", d:"Structură a Comisiei Europene responsabilă în principal de supravegherea modelelor GPAI, coordonarea aplicării uniforme a regulamentului și, din 2026, de sisteme conexe furnizorilor GPAI (art. 64–66)."},
+    {t:"Digital Omnibus privind IA", d:"Denumirea uzuală pentru Regulamentul (UE) 2026/1744, care a modificat AI Act pentru a amâna anumite termene de aplicare pentru sistemele cu risc ridicat și a ajusta câteva obligații (alfabetizare IA, FRIA, transparență)."},
+    {t:"Componentă de siguranță", d:"Componentă a unui produs care îndeplinește o funcție de siguranță pentru acel produs sau al cărei eșec/funcționare defectuoasă pune în pericol sănătatea/siguranța persoanelor — redefinită restrictiv prin Omnibus 2026, pentru a exclude funcțiile de simplă optimizare a performanței sau de confort."}
+  ];
+
+  var quizData = [
+    {q:"De la ce dată se aplică obligațiile pentru sistemele cu risc ridicat „stand-alone” din Anexa III, după modificarea prin Digital Omnibus?", opts:["2 august 2026","2 decembrie 2027","2 august 2028","2 februarie 2025"], correct:1},
+    {q:"Care este amenda maximă pentru încălcarea interdicțiilor de la art. 5?", opts:["15.000.000 € sau 3% din cifra de afaceri mondială","7.500.000 € sau 1% din cifra de afaceri mondială","35.000.000 € sau 7% din cifra de afaceri mondială","Nu există amendă, doar avertisment"], correct:2},
+    {q:"Care este pragul de calcul cumulat pentru instruire de la care un model GPAI este prezumat cu risc sistemic?", opts:["10^21 FLOPs","10^23 FLOPs","10^25 FLOPs","10^18 FLOPs"], correct:2},
+    {q:"Ce a adăugat Regulamentul (UE) 2026/1744 la lista practicilor interzise (art. 5)?", opts:["Interzicerea chatboților în serviciul clienți","Interdicția generării de CSAM sau conținut intim nesolicitat („deepfake”)","Interzicerea totală a recunoașterii faciale","Interzicerea modelelor GPAI cu risc sistemic"], correct:1},
+    {q:"Care autoritate română a fost propusă ca punct unic de contact și autoritate de supraveghere a pieței pentru AI Act?", opts:["ANSPDCP","Curtea de Conturi","ANCOM","Consiliul Concurenței"], correct:2},
+    {q:"Ce reprezintă un FRIA, conform art. 27?", opts:["Un raport financiar anual al furnizorului","O evaluare a impactului asupra drepturilor fundamentale, obligatorie pentru anumiți utilizatori implementatori","O taxă de înregistrare în baza de date UE","Un tip de certificat de conformitate CE"], correct:1}
+  ];
+
+  // ---------- RENDER: timeline ----------
+  var tl = document.getElementById('timeline');
+  timelineData.forEach(function(item, i){
+    var el = document.createElement('div');
+    el.className = 'tl-item' + (item.omnibus ? ' omnibus' : '');
+    el.innerHTML =
+      '<div class="tl-date">' + item.date + (item.omnibus ? ' <span class="tag neutral">omnibus</span>' : '') + '<span class="chev">▾</span></div>' +
+      '<div class="tl-title">' + item.title + '</div>' +
+      '<div class="tl-detail">' + item.detail + '</div>';
+    el.addEventListener('click', function(){ el.classList.toggle('open'); });
+    tl.appendChild(el);
+  });
+
+  // ---------- RENDER: structure ----------
+  var sList = document.getElementById('structureList');
+  structureData.forEach(function(s){
+    var el = document.createElement('div');
+    el.className = 'card';
+    el.style.marginBottom = '10px';
+    el.innerHTML =
+      '<div style="display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:baseline;">' +
+        '<h3 style="font-size:1rem;">' + s.t + ' — ' + s.h + '</h3>' +
+        '<span class="art">' + s.art + '</span>' +
+      '</div>' +
+      '<p style="font-size:.86rem;color:var(--ink-soft);margin-top:8px;">' + s.d + '</p>';
+    sList.appendChild(el);
+  });
+
+  // ---------- RENDER: prohibited (accordion) ----------
+  var pList = document.getElementById('prohibitedList');
+  prohibitedData.forEach(function(p){
+    var el = document.createElement('div');
+    el.className = 'acc';
+    el.innerHTML =
+      '<button class="acc-h"><span><span class="art" style="margin-right:8px;">art. 5(1)(' + String.fromCharCode(96+p.n) + ')</span>' + p.h + '</span><span class="chev">▾</span></button>' +
+      '<div class="acc-body"><p>' + p.d + '</p></div>';
+    el.querySelector('.acc-h').addEventListener('click', function(){ el.classList.toggle('open'); });
+    pList.appendChild(el);
+  });
+
+  // ---------- RENDER: annex III ----------
+  var aList = document.getElementById('annexIIIList');
+  annexIIIData.forEach(function(a){
+    var el = document.createElement('div');
+    el.className = 'acc';
+    el.innerHTML =
+      '<button class="acc-h"><span>' + a.h + '</span><span class="chev">▾</span></button>' +
+      '<div class="acc-body"><p>' + a.d + '</p></div>';
+    el.querySelector('.acc-h').addEventListener('click', function(){ el.classList.toggle('open'); });
+    aList.appendChild(el);
+  });
+
+  // ---------- RENDER: authorities ----------
+  var authGrid = document.getElementById('authorityGrid');
+  authorityData.forEach(function(a){
+    var el = document.createElement('div');
+    el.className = 'authority-card';
+    el.innerHTML =
+      '<h4>' + a.n + '</h4>' +
+      '<span class="role">' + a.role + '</span>' +
+      '<p>' + a.d + '</p>';
+    authGrid.appendChild(el);
+  });
+
+  // ---------- RENDER: case law ----------
+  var caseList = document.getElementById('caseList');
+  caseData.forEach(function(c){
+    var el = document.createElement('div');
+    el.className = 'card';
+    el.style.marginBottom = '12px';
+    el.innerHTML =
+      '<span class="tag neutral">' + c.tag + '</span>' +
+      '<h3 style="font-size:1rem;margin-top:10px;">' + c.h + '</h3>' +
+      '<p class="mono" style="font-size:.78rem;color:var(--ink-soft);margin-top:4px;">' + c.cit + '</p>' +
+      '<p style="font-size:.87rem;margin-top:10px;">' + c.d + '</p>' +
+      '<a href="' + c.link + '" target="_blank" rel="noopener" style="font-size:.82rem;display:inline-block;margin-top:8px;">Sursă primară ↗</a>';
+    caseList.appendChild(el);
+  });
+
+  // ---------- RENDER: glossary ----------
+  var gGrid = document.getElementById('glossaryGrid');
+  function renderGlossary(filter){
+    gGrid.innerHTML = '';
+    var f = (filter || '').toLowerCase();
+    glossaryData.filter(function(g){
+      return !f || g.t.toLowerCase().indexOf(f) > -1 || g.d.toLowerCase().indexOf(f) > -1;
+    }).forEach(function(g){
+      var el = document.createElement('div');
+      el.className = 'flash';
+      el.innerHTML =
+        '<div class="term"><span>' + g.t + '</span></div>' +
+        '<div class="def">' + g.d + '</div>' +
+        '<div class="hint">click pentru definiție</div>';
+      el.addEventListener('click', function(){ el.classList.toggle('open'); });
+      gGrid.appendChild(el);
+    });
+  }
+  renderGlossary('');
+  document.getElementById('glossarySearch').addEventListener('input', function(e){ renderGlossary(e.target.value); });
+
+  // ---------- RENDER: quiz ----------
+  var quizWrap = document.getElementById('quizWrap');
+  quizData.forEach(function(item, qi){
+    var el = document.createElement('div');
+    el.className = 'q';
+    var opts = item.opts.map(function(o, oi){
+      return '<label><input type="radio" name="q' + qi + '" value="' + oi + '"> <span>' + o + '</span></label>';
+    }).join('');
+    el.innerHTML = '<p class="stem">' + (qi+1) + '. ' + item.q + '</p>' + opts + '<div class="fb"></div>';
+    quizWrap.appendChild(el);
+  });
+  document.getElementById('checkQuiz').addEventListener('click', function(){
+    var score = 0;
+    var qs = quizWrap.querySelectorAll('.q');
+    qs.forEach(function(qEl, qi){
+      var checked = qEl.querySelector('input[type="radio"]:checked');
+      var fb = qEl.querySelector('.fb');
+      fb.style.display = 'block';
+      if(!checked){
+        fb.className = 'fb bad';
+        fb.textContent = 'Nu ați selectat un răspuns.';
+        return;
+      }
+      var val = parseInt(checked.value, 10);
+      if(val === quizData[qi].correct){
+        score++;
+        fb.className = 'fb ok';
+        fb.textContent = 'Corect.';
+      } else {
+        fb.className = 'fb bad';
+        fb.textContent = 'Răspuns corect: ' + quizData[qi].opts[quizData[qi].correct];
+      }
+    });
+    document.getElementById('quizScore').textContent = 'Scor: ' + score + ' / ' + quizData.length;
+  });
+
+  // ---------- Pyramid ----------
+  var pyrDetails = {
+    prohibited: {h:"Risc inacceptabil — interzis", body:"Cele 9 practici enumerate exhaustiv la art. 5 (8 inițiale + 1 adăugată prin Omnibus 2026). Nicio evaluare de conformitate nu le poate „salva” — sunt interzise per se, indiferent de măsurile tehnice adoptate. Aplicabile din 2 februarie 2025 (respectiv termenul tranzitoriu 2 decembrie 2026 pentru noua interdicție)."},
+    high: {h:"Risc ridicat — reglementat strict", body:"Sisteme permise, dar supuse unui regim complet: management al riscului, guvernanță a datelor, documentație tehnică, supraveghere umană, evaluare de conformitate, înregistrare în baza de date UE și, uneori, FRIA. Aplicare eșalonată: 2 decembrie 2027 (Anexa III) și 2 august 2028 (Anexa I)."},
+    limited: {h:"Risc limitat — transparență", body:"Sisteme precum chatboții, generatoarele de conținut sintetic sau instrumentele de recunoaștere a emoțiilor. Nu necesită evaluare de conformitate, dar impun obligații de informare a persoanei expuse (art. 50). Aplicabile din 2 august 2026."},
+    minimal: {h:"Risc minim — fără obligații specifice", body:"Marea majoritate a aplicațiilor de IA de pe piață (filtre de spam, recomandări de conținut, optimizare logistică) — fără obligații impuse de AI Act, dincolo de dreptul comun (protecția datelor, protecția consumatorului, răspundere civilă). Aderarea voluntară la coduri de conduită este încurajată de art. 95."}
+  };
+  var pyrDetail = document.getElementById('pyrDetail');
+  function showTier(tier){
+    document.querySelectorAll('.pyr-tier').forEach(function(b){ b.classList.toggle('selected', b.dataset.tier === tier); });
+    var d = pyrDetails[tier];
+    pyrDetail.innerHTML = '<span class="tag ' + tier + '" style="margin-bottom:10px;display:inline-block;">' + tier + '</span><h3>' + d.h + '</h3><p style="font-size:.88rem;color:var(--ink-soft);">' + d.body + '</p>';
+  }
+  document.querySelectorAll('.pyr-tier').forEach(function(b){
+    b.addEventListener('click', function(){ showTier(b.dataset.tier); });
+  });
+  showTier('high');
+
+  // ---------- Navigation ----------
+  var navBtns = document.querySelectorAll('nav.side button[data-target]');
+  var panels = document.querySelectorAll('.panel');
+  var sideNav = document.getElementById('sideNav');
+  var backdrop = document.getElementById('backdrop');
+
+  function goTo(target){
+    panels.forEach(function(p){ p.classList.toggle('active', p.dataset.panel === target); });
+    navBtns.forEach(function(b){ b.classList.toggle('active', b.dataset.target === target); });
+    sideNav.classList.remove('open');
+    backdrop.classList.remove('show');
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+  navBtns.forEach(function(b){
+    b.addEventListener('click', function(){ goTo(b.dataset.target); });
+  });
+
+  document.getElementById('menuBtn').addEventListener('click', function(){
+    sideNav.classList.add('open');
+    backdrop.classList.add('show');
+  });
+  backdrop.addEventListener('click', function(){
+    sideNav.classList.remove('open');
+    backdrop.classList.remove('show');
+  });
+
+})();
+</script>
+
+</body>
+</html>
